@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kiln-backend-home-exercise
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kiln-backend-home-exercise
+  template:
+    metadata:
+      labels:
+        app: kiln-backend-home-exercise
+    spec:
+      containers:
+        - name: kiln-backend-home-exercise
+          image: yani/kiln-backend-home-exercise
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
